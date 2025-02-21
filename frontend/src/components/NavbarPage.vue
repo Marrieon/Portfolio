@@ -34,6 +34,7 @@ export default {
   background-color: white;
   padding: 15px 20px;
   color: black;
+  font-family: cursive;
 }
 
 .logo img {

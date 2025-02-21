@@ -42,6 +42,7 @@ export default {
   justify-content: space-between;
   max-width: 1000px;
   width: 100%;
+  font-family: cursive;
 }
 
 /* Text Styling */

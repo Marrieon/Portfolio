@@ -2,39 +2,59 @@
   <div class="container">
     <Navbar />
     <section class="about">
-      <h2>About Me</h2>
+      <h2 class="section-title">About Me</h2>
       <div class="grid">
         <div class="box web-dev">
           <h3>Web Development</h3>
           <p>
-            Creating stunning, responsive, and dynamic websites using modern
-            frameworks like Vue.js, React, and Node.js.
+            Crafting stunning, responsive, and dynamic web experiences using
+            modern technologies like Vue.js, React, and Node.js.
           </p>
         </div>
         <div class="box data-engineering">
           <h3>Data Engineering</h3>
           <p>
-            Building robust data pipelines, ETL processes, and scalable data
-            solutions with Python, SQL, and cloud platforms.
+            Designing scalable data solutions, ETL pipelines, and robust
+            architectures using Python, SQL, and cloud platforms.
           </p>
         </div>
         <div class="box android-dev">
           <h3>Android Development</h3>
           <p>
-            Developing high-quality, user-friendly Android applications with
-            Kotlin and Java, ensuring great user experience.
+            Building intuitive and high-performance Android applications with
+            Kotlin and Java, ensuring seamless user experiences.
           </p>
         </div>
       </div>
     </section>
-    <Footer />
   </div>
 </template>
 
 <style scoped>
 .container {
   text-align: center;
-  padding: 20px;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+  font-family: cursive;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #42b983;
+  margin: 10px auto 0;
+  border-radius: 2px;
 }
 
 .grid {
@@ -45,27 +65,29 @@
 }
 
 .box {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  transition: transform 0.3s ease;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
 }
 
 .box:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .web-dev {
-  border-top: 5px solid #42b983;
+  border-top: 6px solid #42b983;
 }
 
 .data-engineering {
-  border-top: 5px solid #f39c12;
+  border-top: 6px solid #f39c12;
 }
 
 .android-dev {
-  border-top: 5px solid #3498db;
+  border-top: 6px solid #3498db;
 }
 </style>

@@ -13,5 +13,6 @@
   position: relative;
   bottom: 0;
   width: 100%;
+  font-family: cursive;
 }
 </style>
