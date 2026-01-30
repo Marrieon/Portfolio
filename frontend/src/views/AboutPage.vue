@@ -1,93 +1,252 @@
 <template>
-  <div class="container">
-    <Navbar />
-    <section class="about">
-      <h2 class="section-title">About Me</h2>
-      <div class="grid">
-        <div class="box web-dev">
-          <h3>Web Development</h3>
-          <p>
-            Crafting stunning, responsive, and dynamic web experiences using
-            modern technologies like Vue.js, React, and Node.js.
-          </p>
+  <section class="about-page">
+    <div class="about-hero">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2 class="title">ERPNext engineer with a systems-first mindset</h2>
+        <p class="summary">
+          {{ summaryText }}
+        </p>
+      </div>
+      <div class="snapshot">
+        <div class="snapshot-card">
+          <p class="snapshot-label">Education</p>
+          <p class="snapshot-value">{{ educationText }}</p>
         </div>
-        <div class="box data-engineering">
-          <h3>Data Engineering</h3>
-          <p>
-            Designing scalable data solutions, ETL pipelines, and robust
-            architectures using Python, SQL, and cloud platforms.
-          </p>
+        <div class="snapshot-card">
+          <p class="snapshot-label">Focus</p>
+          <p class="snapshot-value">ERPNext modules and process design</p>
         </div>
-        <div class="box android-dev">
-          <h3>Android Development</h3>
-          <p>
-            Building intuitive and high-performance Android applications with
-            Kotlin and Java, ensuring seamless user experiences.
-          </p>
+        <div class="snapshot-card">
+          <p class="snapshot-label">Strength</p>
+          <p class="snapshot-value">ERPNext architecture and data modeling</p>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="capabilities">
+        <h3>Technical capabilities</h3>
+        <ul v-if="skills.length">
+          <li v-for="skill in skills" :key="skill.id">
+            {{ skill.name }} <span v-if="skill.level">({{ skill.level }})</span>
+          </li>
+        </ul>
+        <ul v-else>
+          <li>ERPNext setup, customization, and configuration</li>
+          <li>Doctypes, roles, permissions, and workflow rules</li>
+          <li>Scripted automation, notifications, and validations</li>
+          <li>MariaDB schema, joins, and data integrity checks</li>
+        </ul>
+      </div>
+      <div class="process">
+        <h3>Engineering approach</h3>
+        <div class="process-steps">
+          <div class="step">
+            <span class="step-num">01</span>
+            <div>
+              <h4>Discovery</h4>
+              <p>Map requirements to ERPNext modules and doctypes.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">02</span>
+            <div>
+              <h4>Design</h4>
+              <p>Design workflows, permissions, and data structure.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">03</span>
+            <div>
+              <h4>Delivery</h4>
+              <p>Implement, test, and document configuration and queries.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
+<script>
+import { api } from "@/api";
+
+export default {
+  name: "AboutPage",
+  data() {
+    return {
+      profile: null,
+      education: [],
+      skills: [],
+      defaultSummary:
+        "I am a 23-year-old recent graduate from St. Pauls University. I focus fully on ERP systems with ERPNext as my specialization. I work across Finance, Selling, Buying, Inventory, HR, Manufacturing, and Projects, and I understand how ERPNext documents map to MariaDB tables, indexes, and relationships for traceable data flow.",
+    };
+  },
+  computed: {
+    summaryText() {
+      return this.profile && this.profile.bio
+        ? this.profile.bio
+        : this.defaultSummary;
+    },
+    educationText() {
+      if (this.education.length) {
+        const item = this.education[0];
+        const degree = item.degree || "Recent Graduate";
+        return `${item.school} - ${degree}`;
+      }
+      return "St. Pauls University - Recent Graduate";
+    },
+  },
+  async mounted() {
+    try {
+      const [profile, education, skills] = await Promise.all([
+        api.getProfile(),
+        api.getEducation(),
+        api.getSkills(),
+      ]);
+      this.profile = profile;
+      this.education = education || [];
+      this.skills = (skills || []).slice(0, 6);
+    } catch (err) {
+      // Keep fallback content if API is unavailable.
+      console.error(err);
+    }
+  },
+};
+</script>
+
 <style scoped>
-.container {
-  text-align: center;
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: auto;
-  font-family: cursive;
+.about-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.section-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
-  position: relative;
+.about-hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  align-items: start;
 }
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: #42b983;
-  margin: 10px auto 0;
-  border-radius: 2px;
+.title {
+  font-size: clamp(2rem, 1.6rem + 1.5vw, 2.6rem);
+  margin: 12px 0 16px;
+  color: #1f2734;
 }
 
-.grid {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+.summary {
+  color: #555;
+  line-height: 1.7;
+  max-width: 600px;
 }
 
-.box {
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  width: 320px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
+.snapshot {
+  display: grid;
+  gap: 14px;
 }
 
-.box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+.snapshot-card {
+  background: #fffaf4;
+  border: 1px solid rgba(31, 39, 52, 0.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 20px rgba(31, 39, 52, 0.08);
 }
 
-.web-dev {
-  border-top: 6px solid #42b983;
+.snapshot-label {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  color: #b86a34;
+  font-weight: 600;
 }
 
-.data-engineering {
-  border-top: 6px solid #f39c12;
+.snapshot-value {
+  margin: 0;
+  color: #2f3a4a;
+  font-weight: 500;
 }
 
-.android-dev {
-  border-top: 6px solid #3498db;
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.capabilities,
+.process {
+  background: #ffffff;
+  border: 1px solid rgba(31, 39, 52, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 24px rgba(31, 39, 52, 0.08);
+}
+
+.capabilities h3,
+.process h3 {
+  margin-top: 0;
+  color: #1f2734;
+}
+
+.capabilities ul {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: #4a5563;
+  line-height: 1.7;
+}
+
+.process-steps {
+  display: grid;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.step-num {
+  background: #2f6f6d;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.step h4 {
+  margin: 0 0 6px;
+  color: #1f2734;
+}
+
+.step p {
+  margin: 0;
+  color: #4a5563;
+}
+
+@media (max-width: 768px) {
+  .about-page {
+    padding: 8px;
+  }
+
+  .about-hero {
+    gap: 20px;
+  }
+
+  .about-grid {
+    gap: 20px;
+  }
+
+  .capabilities,
+  .process {
+    padding: 18px;
+  }
 }
 </style>

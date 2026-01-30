@@ -14,6 +14,12 @@ const routes = [
       import(/* webpackChunkName: "AboutPage" */ "../views/AboutPage.vue"),
   },
   {
+    path: "/projects",
+    name: "ProjectPage",
+    component: () =>
+      import(/* webpackChunkName: "ProjectPage" */ "../views/ProjectPage.vue"),
+  },
+  {
     path: "/contact",
     name: "ContactPage", // Capitalize for consistency
     component: () =>

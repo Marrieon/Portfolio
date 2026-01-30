@@ -1,101 +1,194 @@
 <template>
-  <div class="contact-container">
-      <div class="image-section">
-        <img src="@/assets/Hom.png" alt="Profile Image" class="Hom-img" />
-      </div>
-      <div class="form-section">
-        <h1 class="title">Contact</h1>
-        <form>
-          <input type="text" placeholder="Full Name" required />
-          <input type="email" placeholder="E-mail" required />
-          <textarea placeholder="Message" required></textarea>
-          <button type="submit">Contact</button>
-        </form>
-        <div class="contact-info">
-          <p>
-            <strong>Contact</strong><br />
-            hi@fashion.com
-          </p>
-          <p>
-            <strong>Based in</strong><br />
-            Nairobi, Kenya
-          </p>
-          <div class="social-icons">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
+  <section class="contact">
+    <div class="contact-card">
+      <div class="contact-copy">
+        <p class="eyebrow">Contact</p>
+        <h1>Let's build your ERPNext system</h1>
+        <p class="summary">
+          Share your modules, workflows, and data requirements. I will respond
+          with a technical plan for ERPNext configuration, automation, and
+          reporting.
+        </p>
+
+        <div class="contact-details">
+          <div>
+            <p class="detail-label">Email</p>
+            <p class="detail-value">yourname@email.com</p>
+          </div>
+          <div>
+            <p class="detail-label">Location</p>
+            <p class="detail-value">Your city, country</p>
+          </div>
+          <div>
+            <p class="detail-label">Availability</p>
+            <p class="detail-value">Open to ERPNext projects and support</p>
           </div>
         </div>
+      </div>
+
+      <form class="contact-form" @submit.prevent="submitForm">
+        <label>
+          Full name
+          <input
+            v-model="form.name"
+            type="text"
+            placeholder="Your name"
+            required
+          />
+        </label>
+        <label>
+          Email
+          <input
+            v-model="form.email"
+            type="email"
+            placeholder="you@email.com"
+            required
+          />
+        </label>
+        <label>
+          ERP details
+          <textarea
+            v-model="form.message"
+            placeholder="Modules, workflows, data structure, reporting needs"
+            required
+          ></textarea>
+        </label>
+        <button class="btn btn-primary" type="submit" :disabled="submitting">
+          {{ submitting ? "Sending..." : "Send message" }}
+        </button>
+        <p v-if="status" class="status">{{ status }}</p>
+      </form>
     </div>
-  </div>
+  </section>
 </template>
 
+<script>
+import { api } from "@/api";
+
+export default {
+  name: "ContactPage",
+  data() {
+    return {
+      form: {
+        name: "",
+        email: "",
+        message: "",
+      },
+      submitting: false,
+      status: "",
+    };
+  },
+  methods: {
+    async submitForm() {
+      this.status = "";
+      this.submitting = true;
+      try {
+        await api.sendContact(this.form);
+        this.status = "Thanks! Your message has been sent.";
+        this.form = { name: "", email: "", message: "" };
+      } catch (err) {
+        this.status = "Sorry, something went wrong. Please try again.";
+        console.error(err);
+      } finally {
+        this.submitting = false;
+      }
+    },
+  },
+};
+</script>
+
 <style scoped>
-.contact-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px;
-  font-family: cursive;
-}
-
-.contact-content {
-  display: flex;
-  max-width: 900px;
-  background: #fff;
+.contact {
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.image-section .Hom-img {
-  width: 300px;
-  height: auto;
-  border-radius: 10px 0 0 10px;
+.contact-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  background: #ffffff;
+  border: 1px solid rgba(31, 39, 52, 0.08);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 16px 32px rgba(31, 39, 52, 0.1);
 }
 
-.form-section {
-  padding: 20px;
-  flex: 1;
-  text-align: left;
+.contact-copy h1 {
+  font-size: clamp(2rem, 1.7rem + 1.3vw, 2.6rem);
+  margin: 12px 0 16px;
+  color: #1f2734;
 }
 
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+.summary {
+  color: #555;
+  line-height: 1.7;
+  max-width: 520px;
 }
 
-form input,
-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-form button {
-  background: black;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  border-radius: 5px;
-}
-
-.contact-info {
+.contact-details {
   margin-top: 20px;
-  font-size: 1rem;
-  color: #333;
+  display: grid;
+  gap: 14px;
 }
 
-.social-icons a {
-  margin-right: 10px;
-  color: black;
-  font-size: 1.2rem;
-  text-decoration: none;
+.detail-label {
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  color: #b86a34;
+  font-weight: 600;
+}
+
+.detail-value {
+  margin: 0;
+  color: #2f3a4a;
+  font-weight: 500;
+}
+
+.contact-form {
+  display: grid;
+  gap: 12px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  color: #2f3a4a;
+  font-size: 0.9rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(31, 39, 52, 0.2);
+  background: #fbf7f2;
+  font-size: 0.95rem;
+}
+
+.contact-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.status {
+  margin: 6px 0 0;
+  color: #2f6f6d;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 8px;
+  }
+
+  .contact-card {
+    padding: 20px;
+  }
 }
 </style>
