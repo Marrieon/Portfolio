@@ -4,11 +4,7 @@
       <div class="projects-content">
         <div class="header">
           <h1>Projects That Show Delivery and Quality</h1>
-          <p class="subtitle">
-            A focused set of project highlights with clear outcomes, live demos,
-            and code access. These are placeholders and will be replaced with
-            your real projects.
-          </p>
+         
         </div>
 
         <div class="project-grid">
