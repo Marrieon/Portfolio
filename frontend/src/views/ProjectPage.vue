@@ -6,7 +6,7 @@
           <h1>Projects That Show Delivery and Quality</h1>
           <p class="subtitle">
             A focused set of project highlights with clear outcomes, live demos,
-            and code access. 
+            and code access.
           </p>
         </div>
 
