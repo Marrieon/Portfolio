@@ -66,6 +66,19 @@ INSERT OR IGNORE INTO projects (
     '["Validated attendance workflows","Accurate payroll runs","Audit-ready records"]',
     '["HR","Payroll","Permissions"]',
     2
+  ),
+  (
+    2,
+    'HR and Payroll Configuration',
+    'HR, Payroll, Attendance workflows',
+    'Configured HR, payroll, and attendance with permissions, rules, and validations.',
+    'ERP Engineer',
+    'HR, Payroll, Attendance, Permissions',
+    'ERPNext, MariaDB',
+    'Employee -> Attendance -> Payroll Entry -> Payslip',
+    '["Validated attendance workflows","Accurate payroll runs","Audit-ready records"]',
+    '["HR","Payroll","Permissions"]',
+    2
   );
 
 INSERT OR IGNORE INTO education (id, school, degree, field, details) VALUES

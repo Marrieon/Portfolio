@@ -29,7 +29,8 @@
         <h3>Technical capabilities</h3>
         <ul v-if="skills.length">
           <li v-for="skill in skills" :key="skill.id">
-            {{ skill.name }} <span v-if="skill.level">({{ skill.level }})</span>
+            {{ skill.name }}
+            <span v-if="skill.level">({{ skill.level }})</span>
           </li>
         </ul>
         <ul v-else>
@@ -121,6 +122,7 @@ export default {
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px;
+  width: 100%;
 }
 
 .about-hero {
